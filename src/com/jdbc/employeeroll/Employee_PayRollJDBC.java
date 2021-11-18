@@ -1,43 +1,30 @@
 package com.jdbc.employeeroll;
 import java.sql.*;
-import java.util.Scanner;
 
 public class Employee_PayRollJDBC {
 	
 	public static void main(String[] args)  {
 		Connection connection = null;
-		PreparedStatement statement = null;
-		String query= "select * from payroll_service.employee_payroll where empName = ?";
-		Scanner sc = new Scanner(System.in);
-        System.out.println("Enter Employee Name to fetch Employee payroll details");
-        String Name = sc.next();
-        sc.close();
+		Statement statement = null;
+		String query= "select * from payroll_service.employee_payroll where startDate between cast('2018-07-18' as date) and date(now())";
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			System.out.println("Driver loaded");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306?user = root & password = Brijesh@534");
 			System.out.println("connection established");
-			statement = con.prepareStatement(query);
+			statement = con.createStatement();
 			System.out.println("platform created");
-			statement.setString(1, Name);
-			ResultSet resultSet = statement.executeQuery();
+			ResultSet result = statement.executeQuery(query);
 			System.out.println("data fetched");
-            if(resultSet.next()){
-            	String empId = resultSet.getString(1);
-                String empName = resultSet.getString(2);
-                String salary = resultSet.getString(3);
-                Date startDate = resultSet.getDate(4);
-                System.out.println("name:" + empId+ " Employee Name : "+ empName+ " Salary: "+ salary+" Start date: "+startDate);
-             }
-            else{
-                System.out.println("no data found : "+ Name);
+            if(result.next()){
+            	 System.out.println("emp_Id = "+result.getInt(1) + " Emp_name = "+result.getString(2) + " Salary =" + result.getInt(3) + " Start Date =" + result.getString(4));
             }
 		}
 		catch(ClassNotFoundException | SQLException ex){
 			((Throwable) ex).printStackTrace();
         }
 		finally {
-            if(statement != null){
+			if(statement != null){
                 try{
                     statement.close();
                 }catch(SQLException e){
