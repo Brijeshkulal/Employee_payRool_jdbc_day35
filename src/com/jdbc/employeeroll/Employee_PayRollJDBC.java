@@ -6,7 +6,7 @@ public class Employee_PayRollJDBC {
 	
 	public static void main(String[] args)  {
 		Connection connection = null;
-        PreparedStatement statement = null;
+		PreparedStatement statement = null;
 		String query= "select * from payroll_service.employee_payroll where empName = ?";
 		Scanner sc = new Scanner(System.in);
         System.out.println("Enter Employee Name to fetch Employee payroll details");
@@ -20,8 +20,8 @@ public class Employee_PayRollJDBC {
 			statement = con.prepareStatement(query);
 			System.out.println("platform created");
 			statement.setString(1, Name);
-            ResultSet resultSet = statement.executeQuery();
-            System.out.println("data fetched");
+			ResultSet resultSet = statement.executeQuery();
+			System.out.println("data fetched");
             if(resultSet.next()){
             	String empId = resultSet.getString(1);
                 String empName = resultSet.getString(2);
